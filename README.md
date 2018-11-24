@@ -1,3 +1,3 @@
-# js-Basics
+# JS Course
 
-Repository of exercises of Module 2 of [Javascript Course 2018](https://www.udemy.com/the-complete-javascript-course)
+Repository of exercises and projects of [Javascript Course 2018](https://www.udemy.com/the-complete-javascript-course)
