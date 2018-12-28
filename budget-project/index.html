@@ -44,8 +44,8 @@
                         <option value="inc" selected>+</option>
                         <option value="exp">-</option>
                     </select>
-                    <input type="text" class="add__description" placeholder="Add description">
-                    <input type="number" class="add__value" placeholder="Value">
+                    <input type="text" class="add__description" placeholder="Add description" required>
+                    <input type="number" class="add__value" placeholder="Value" required>
                     <button class="add__btn"><i class="ion-ios-checkmark-outline"></i></button>
                 </div>
             </div>
@@ -54,7 +54,7 @@
                 <div class="income">
                     <h2 class="icome__title">Income</h2>
                     
-                    <div class="income__list">
+                    <div id="incomeContainer" class="income__list">
                        
                         <!--
                         <div class="item clearfix" id="income-0">
@@ -86,7 +86,7 @@
                 <div class="expenses">
                     <h2 class="expenses__title">Expenses</h2>
                     
-                    <div class="expenses__list">
+                    <div id="expensesContainer"class="expenses__list">
                        
                         <!--
                         <div class="item clearfix" id="expense-0">

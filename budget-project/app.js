@@ -56,22 +56,70 @@ var budgetController = (function() {
 
 //UI CONTROLLER
 var UIController = (() => {
-
     let DOMstrings = {
         inputType: '.add__type',
         inputDescription:'.add__description',
         inputValue: '.add__value',
-        inputBtn: '.add__btn'
+        inputBtn: '.add__btn',
+        incomeContainer: '.income__list',
+        expenseContainer: '.expenses__list'
     };
 
+    
     return {
         getInput() {
             return{
-            type: document.querySelector(DOMstrings.inputType).value,//will be either inc o exp
-            description: document.querySelector(DOMstrings.inputDescription).value,
-            value: document.querySelector(DOMstrings.inputValue).value
+                type: document.querySelector(DOMstrings.inputType).value,//will be either inc o exp
+                description: document.querySelector(DOMstrings.inputDescription).value,
+                value: document.querySelector(DOMstrings.inputValue).value
             };
         },
+        
+        addListItem(obj, type){
+            let html;
+            let element;
+            //Create HTML string with placeholder text
+            
+            if (type ==='inc'){
+                element = DOMstrings.incomeContainer;
+                html = `<div class="item clearfix" id="income-${obj.id}">
+                <div class="item__description">${obj.description}</div>
+                <div class="right clearfix">
+                <div class="item__value">${obj.value}</div>
+                <div class="item__delete">
+                <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
+                </div>
+                </div>
+                </div>`;
+                
+            } else if (type==='exp'){
+                element = DOMstrings.expenseContainer;
+                html = `
+                <div class="item clearfix" id="expense-${obj.id}">
+                            <div class="item__description">${obj.description}</div>
+                            <div class="right clearfix">
+                            <div class="item__value">${obj.value}</div>
+                                <div class="item__percentage">21%</div>
+                                <div class="item__delete">
+                                <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
+                                </div>
+                            </div>
+                        </div>`;
+                    }
+                    
+            //Insert the HTML into the DOM
+            document.querySelector(element).insertAdjacentHTML('beforeend', html);
+            
+        },
+        
+        clearFields(){
+            const fields = document.querySelectorAll(DOMstrings.inputDescription + ',' + DOMstrings.inputValue);
+            fields.forEach(field => {
+                field.value="";
+            });
+            
+        },
+
         getDOMstrings() {
             return DOMstrings;
         }
@@ -82,7 +130,7 @@ var UIController = (() => {
 //GLOBAL APP CONTROLLER
 var controller = ((budgetCtrl, UICtrl) => {
 
-    let setupEventListeners = () => {
+    const setupEventListeners = () => {
         document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAddItem);
 
         document.addEventListener('keypress', function(e) {
@@ -93,22 +141,40 @@ var controller = ((budgetCtrl, UICtrl) => {
 
     }
 
-    let DOM = UICtrl.getDOMstrings();
+    const DOM = UICtrl.getDOMstrings();
 
-    let ctrlAddItem = () => {
+    const updateBudget = () => {
+        //1. Calculate the budget
+
+        //2. Return the budget
+
+        //3. Display the budget on the UI
+
+    }
+
+    const ctrlAddItem = () => {
         let input, newItem;
 
         //1.Get the field input data
         input = UICtrl.getInput();
         
         //2.Add the item to the budget controller
-        newItem = budgetCtrl.addItem(input.type, input.description, input.value);
+        if (input.description!=='' && input.value!=='' && input.value > 0) { // check we have values
+            newItem = budgetCtrl.addItem(input.type, input.description, input.value);
+        }
 
         //3.Add the item to the UI
+        if(newItem){
+            UICtrl.addListItem(newItem, input.type);
+        }
 
-        //4.Calculate the budget
+        //4. Clear the fields
+        UICtrl.clearFields();
 
-        //5.Display the budget to the UI
+        //5.Calculate and update the budget
+        updateBudget();
+
+        //6.Display the budget to the UI
 
          
         console.log('it works');
