@@ -9,7 +9,7 @@ GAME RULES:
 
 */
 
-var scores, roundScore, activePlayer, gamePlaying;
+let scores, roundScore, activePlayer, gamePlaying;
 
 init();
 
@@ -17,8 +17,8 @@ init();
 
 document.querySelector('.btn-roll').addEventListener('click', function() { //roll the dice
     if(gamePlaying){ // if playing the game
-        let dice = Math.floor(Math.random()*6) + 1;
-        let diceDom = document.querySelector('.dice')
+        const dice = Math.floor(Math.random()*6) + 1;
+        const diceDom = document.querySelector('.dice')
         diceDom.style.display = 'block';
         diceDom.src = `dice-${dice}.png`;
 
