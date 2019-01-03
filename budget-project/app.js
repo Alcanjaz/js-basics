@@ -15,7 +15,7 @@ const budgetController = (function() {
 
     const calculateTotal = (type) => {
         let sum = 0;
-        data.allItems[type].forEach(curr => sum += parseInt(curr.value));
+        data.allItems[type].forEach(curr => sum += Number(curr.value));
         data.totals[type] = sum;
     };
 
@@ -56,6 +56,16 @@ const budgetController = (function() {
             return newItem;
 
         },
+
+        deleteItem(type, id){
+
+            const ids = data.allItems[type].map(current => current.id);
+            const index = ids.indexOf(id);
+
+            if (index !== -1) {
+                data.allItems[type].splice(index, 1);
+            }
+        }, 
 
         calculateBudget(){
 
@@ -99,7 +109,12 @@ const UIController = (() => {
         inputValue: '.add__value',
         inputBtn: '.add__btn',
         incomeContainer: '.income__list',
-        expenseContainer: '.expenses__list'
+        expenseContainer: '.expenses__list',
+        budgetLabel: '.budget__value',
+        incomeLabel: '.budget__income--value',
+        expenseLabel: '.budget__expenses--value',
+        percentageLabel: '.budget__expenses--percentage',
+        container: '.container'
     };
 
     
@@ -119,7 +134,7 @@ const UIController = (() => {
             
             if (type ==='inc'){
                 element = DOMstrings.incomeContainer;
-                html = `<div class="item clearfix" id="income-${obj.id}">
+                html = `<div class="item clearfix" id="inc-${obj.id}">
                 <div class="item__description">${obj.description}</div>
                 <div class="right clearfix">
                 <div class="item__value">${obj.value}</div>
@@ -132,7 +147,7 @@ const UIController = (() => {
             } else if (type==='exp'){
                 element = DOMstrings.expenseContainer;
                 html = `
-                <div class="item clearfix" id="expense-${obj.id}">
+                <div class="item clearfix" id="exp-${obj.id}">
                             <div class="item__description">${obj.description}</div>
                             <div class="right clearfix">
                             <div class="item__value">${obj.value}</div>
@@ -148,6 +163,10 @@ const UIController = (() => {
             document.querySelector(element).insertAdjacentHTML('beforeend', html);
             
         },
+        deleteListItem(selectorID){
+            const el = document.getElementById(selectorID)
+            el.parentNode.removeChild(el);
+        },
         
         clearFields(){
             const fields = document.querySelectorAll(DOMstrings.inputDescription + ',' + DOMstrings.inputValue);
@@ -155,6 +174,13 @@ const UIController = (() => {
                 field.value="";
             });
             
+        },
+        
+        displayBudget(obj){
+            document.querySelector(DOMstrings.budgetLabel).textContent = `${obj.budget > 0 ? '+':''}${obj.budget}`; 
+            document.querySelector(DOMstrings.incomeLabel).textContent = obj.totalInc; 
+            document.querySelector(DOMstrings.expenseLabel).textContent = obj.totalExp; 
+            document.querySelector(DOMstrings.percentageLabel).textContent = obj.percentage > 0 && obj.budget > 0 ? `${obj.percentage}%`: '---'; 
         },
 
         getDOMstrings() {
@@ -176,6 +202,9 @@ const controller = ((budgetCtrl, UICtrl) => {
         }
     });
 
+    document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem);
+
+
     }
 
     const DOM = UICtrl.getDOMstrings();
@@ -188,7 +217,7 @@ const controller = ((budgetCtrl, UICtrl) => {
         const budget = budgetCtrl.getBudget();
 
         //3. Display the budget on the UI
-        console.log(budget);
+        UICtrl.displayBudget(budget);
 
     }
 
@@ -215,9 +244,40 @@ const controller = ((budgetCtrl, UICtrl) => {
 
     };
 
+    const ctrlDeleteItem = (e) => {
+        const itemID = e.target.parentNode.parentNode.parentNode.parentNode.id;
+        let splitID;
+        let type;
+        let ID;
+
+        if(itemID) {
+            splitID = itemID.split('-');
+            type = splitID[0];
+            ID = parseInt(splitID[1]);
+        }
+
+        //1. delete the item form the data structure
+        budgetCtrl.deleteItem(type, ID);
+        
+
+        //2. delete the item from the UI
+        UICtrl.deleteListItem(itemID);
+
+        //3.Update and show the new budget
+        updateBudget();
+
+        
+    }
+
     return{
         init() {
             console.log('Application has started.');
+            UICtrl.displayBudget({
+                budget:0,
+                totalInc:0,
+                totalExp: 0,
+                percentage: -1
+            });
             setupEventListeners();
         }
     }
