@@ -1,6 +1,13 @@
 import { elements } from './base';
 
 export const getInput = () => elements.searchInput.value;
+export const clearInput = () => {
+    elements.searchInput.value = '';
+}
+
+export const clearResults = () => {
+    elements.searchResList.innerHTML = '';
+}
 
 const renderRecipe = recipe => {
     const markup = `
@@ -20,5 +27,5 @@ const renderRecipe = recipe => {
 } 
 
 export const renderResults = recipes => {
-    recipes.foreach(renderRecipe);
+    recipes.forEach(renderRecipe);
 }
