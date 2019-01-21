@@ -6,6 +6,10 @@ export default class Likes {
     addLike(id, title, author, img) {
         const like = { id, title, author, img };
         this.likes.push(like);
+
+        //Persist data in localStorage
+        this.persistData();
+
         return like;
     }
 
@@ -20,5 +24,15 @@ export default class Likes {
 
     getLikes(){
         return this.likes.length;
+    }
+
+    persistData(){
+        localStorage.setItem('likes', JSON.stringify(this.likes));
+    }
+    readStorage(){
+        const storage = JSON.parse(localStorage.getItem('likes'));
+        
+        //Restoring likes from the local storage
+        if(storage) this.likes = storage;
     }
 }
