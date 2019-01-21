@@ -24,7 +24,7 @@ export default class Recipe {
             // Assuming that we need 15 minutes each 3 ingredents
             const numIng = this.ingredients.length;
             const periods = Math.ceil(numIng / 3);
-            this.time = periods * 15
+            this.time = periods * 15;
         }
 
         calcServings(){
@@ -59,7 +59,7 @@ export default class Recipe {
                 const arrCount = arrIng.slice(0, unitIndex);
                 let count;
                 if (arrCount.length === 1) {
-                    count = arrIng[0].replace('-','+');
+                    count = eval(arrIng[0].replace('-','+'));
                 } else {
                     count = eval(arrIng.slice(0, unitIndex).join('+'));
                 }

@@ -9,17 +9,17 @@ const formatCount = count => {
     if(count){
         // count = 2.5 --> 2 1/2
         // count = 0.5 --> 1/2
-        const [int, dec] = count.toString().split('.').map(el => parseInt(el, 10));
+         const [int, dec] = count.toString().split('.').map(el => parseInt(el, 10));
 
-        if(!dec) return count;
+         if(!dec) return count;
 
-        if(int === 0) {
-            const fraction = new Fraction(count);
-            return `${fraction.numerator}/${fraction.denominator}`
-        } else{
-            const fraction = new Fraction(count - int);
-            return `${int} ${fraction.numerator}/${fraction.denominator}`;
-        }
+         if(int === 0) {
+             const fraction = new Fraction(count);
+             return `${fraction.numerator}/${fraction.denominator}`
+         } else{
+             const fraction = new Fraction(count - int);
+             return `${int} ${fraction.numerator}/${fraction.denominator}`;
+         }
     }
     return '?';
 };
@@ -89,7 +89,7 @@ export const renderRecipe = recipe => {
                     
                 </ul>
 
-                <button class="btn-small recipe__btn">
+                <button class="btn-small recipe__btn recipe__btn--add">
                     <svg class="search__icon">
                         <use href="img/icons.svg#icon-shopping-cart"></use>
                     </svg>
