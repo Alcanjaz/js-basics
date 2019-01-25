@@ -29,4 +29,4 @@ A recipes search app powered by food2fork.com API to train Callbacks, Asynchrono
 
 ![Imgur](https://i.imgur.com/ZcrAXa3.png)
 
-A web page made for train Node.js Basics like routing, fileread and dynamic HTML creation.
+A web page made to train Node.js Basics like routing, fileread and dynamic HTML creation.
